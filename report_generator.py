@@ -10,20 +10,8 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-
-def generate_plot():
-    x = np.linspace(0, 10, 100)
-    y = np.sin(x)
-
-    plt.plot(x, y)
-    plt.xlabel('X-axis')
-    plt.ylabel('Y-axis')
-    plt.title('Sine Wave Plot')
-    plt.grid(True)
-    plot_filename = 'plot.png'
-    plt.savefig(plot_filename)  # Save the plot as an image
-    plt.close()
-    return plot_filename
+custom_palette = sns.color_palette("Set1", 8)
+colors = custom_palette.as_hex()
 
 def process_data(data_filename):
     # Read the data
@@ -78,7 +66,6 @@ def generate_garmin_plots(df):
         plt.figure(figsize=(20, 20))
         # Set Seaborn style
         sns.set_style('whitegrid')
-        custom_palette = sns.color_palette(["#3498db", "#e74c3c", "#2ecc71"])
         sns.set_palette(custom_palette)
 
         # Create a bar plot
@@ -87,8 +74,8 @@ def generate_garmin_plots(df):
         plt.xlabel('Week', fontsize=15)
         plt.ylabel('Distance (km)', fontsize=15)
         plt.title('Weekly Distance Run', fontsize=20, fontweight='bold')
-        plt.xticks(fontsize=10, rotation=45)  # Rotate x-axis labels for readability
-        plt.yticks(fontsize=10)
+        plt.xticks(fontsize=15, rotation=45)  # Rotate x-axis labels for readability
+        plt.yticks(fontsize=15)
         plt.grid(axis='y', linestyle='--', alpha=0.5)  # Add dashed grid lines
         plt.tight_layout()  # Adjust spacing
         plt.legend().set_visible(False)
@@ -102,29 +89,31 @@ def generate_garmin_plots(df):
         fig, axs = plt.subplots(4, 1, figsize=(20, 20), sharex=True)
 
         # Plot Avg HR
-        axs[0].plot(df['Date'], df['Avg HR'], label='Avg HR', color='blue')
-        axs[0].plot(df['Date'], df['Max HR'], label='Max HR', linestyle=':', color='blue')
+        axs[0].plot(df['Date'], df['Avg HR'], label='Avg HR', color=colors[0])
+        axs[0].plot(df['Date'], df['Max HR'], label='Max HR', linestyle=':', color=colors[0])
         axs[0].set_ylabel('HR (bpm)', fontsize=15)
+        axs[0].tick_params(axis='both', which='major', labelsize=15)
         axs[0].grid(True)
         axs[0].legend(fontsize=15)
 
         # Plot Avg Pace
-        axs[1].plot(df['Date'], df['Avg Pace'], label='Avg Pace', color='red')
-        axs[1].plot(df['Date'], df['Best Pace'], label='Best Pace', linestyle=':', color='red')
+        axs[1].plot(df['Date'], df['Avg Pace'], label='Avg Pace', color=colors[1])
+        axs[1].plot(df['Date'], df['Best Pace'], label='Best Pace', linestyle=':', color=colors[1])
         axs[1].set_ylabel('Pace (min/km)', fontsize=15)
+        axs[1].tick_params(axis='both', which='major', labelsize=15)
         axs[1].grid(True)
         axs[1].legend(fontsize=15)
 
         # Plot Avg Run Cadence
-        axs[2].plot(df['Date'], df['Avg Run Cadence'], label='Avg Run Cadence', color='green')
-        axs[2].plot(df['Date'], df['Max Run Cadence'], label='Max Run Cadence', linestyle=':', color='green')
+        axs[2].plot(df['Date'], df['Avg Run Cadence'], label='Avg Run Cadence', color=colors[2])
+        axs[2].plot(df['Date'], df['Max Run Cadence'], label='Max Run Cadence', linestyle=':', color=colors[2])
         axs[2].set_ylabel('Cadence (spm)', fontsize=15)
-        axs[2].xaxis.set_ticks(fontsize=15)  # fix x ticks
+        axs[2].tick_params(axis='both', which='major', labelsize=15)
         axs[2].grid(True)
         axs[2].legend(fontsize=15)
 
         # Plot Distance
-        axs[3].plot(df['Date'], df['Distance'], label='Distance', color='black')
+        axs[3].plot(df['Date'], df['Distance'], label='Distance', color=colors[3])
         axs[3].set_ylabel('Distance (km)', fontsize=15)
         axs[3].set_xlabel('Date', fontsize=15)
         axs[3].tick_params(axis='both', which='major', labelsize=15)
@@ -132,9 +121,9 @@ def generate_garmin_plots(df):
 
         # Add secondary axis for Total Ascent
         axs2 = axs[3].twinx()  # Create a twin Axes sharing the same x-axis
-        axs2.plot(df['Date'], df['Total Ascent'], label='Total Ascent', linestyle=':', color='purple')
-        axs2.set_ylabel('Total Ascent (m)', color='purple', fontsize=15)
-        axs2.tick_params(axis='y', labelcolor='purple', fontsize=15)
+        axs2.plot(df['Date'], df['Total Ascent'], label='Total Ascent', linestyle=':', color=colors[4])
+        axs2.set_ylabel('Total Ascent (m)', color=colors[4], fontsize=15)
+        axs2.tick_params(axis='both', which='major', labelsize=15)
         #axs[3].legend()
         #axs2.legend()
         # Add a title
@@ -156,43 +145,43 @@ def generate_garmin_plots(df):
         axes = axes.flatten()
 
         # Subplot HR
-        sns.histplot(df['Avg HR'], bins=20, ax=axes[0], color='blue', alpha=0.5, label='Avg HR')
-        sns.histplot(df['Max HR'], bins=20, ax=axes[0], color='skyblue', alpha=0.5, label='Max HR')
+        sns.histplot(df['Avg HR'], bins=20, ax=axes[0], color=colors[0], alpha=0.5, label='Avg HR')
+        sns.histplot(df['Max HR'], bins=20, ax=axes[0], color=colors[1], alpha=0.5, label='Max HR')
         axes[0].set_title('HR', fontsize=20)
         axes[0].set_xlabel('bpm', fontsize=15)
         axes[0].set_ylabel('')
-        axes[0].yaxis.set_ticks([], fontsize=15)  # Remove y-axis ticks
-        axes[0].xaxis.set_ticks(fontsize=15)  # Remove y-axis ticks
+        axes[0].yaxis.set_ticks([])  # Remove y-axis ticks
+        axes[0].tick_params(axis='both', which='major', labelsize=15)
         axes[0].legend()
 
         # Subplot Pace
-        sns.histplot(df['Avg Pace'], bins=20, ax=axes[1], color='blue', alpha=0.5, label='Avg Pace')
-        sns.histplot(df['Best Pace'], bins=20, ax=axes[1], color='skyblue', alpha=0.5, label='Max Pace')
+        sns.histplot(df['Avg Pace'], bins=20, ax=axes[1], color=colors[2], alpha=0.5, label='Avg Pace')
+        sns.histplot(df['Best Pace'], bins=20, ax=axes[1], color=colors[3], alpha=0.5, label='Max Pace')
         axes[1].set_title('Pace', fontsize=20)
         axes[1].set_xlabel('min/km', fontsize=15)
         axes[1].set_ylabel('')
-        axes[1].yaxis.set_ticks([], fontsize=15)  # Remove y-axis ticks
-        axes[1].xaxis.set_ticks(fontsize=15)  # Remove y-axis ticks
+        axes[1].yaxis.set_ticks([])  # Remove y-axis ticks
+        axes[1].tick_params(axis='both', which='major', labelsize=15)
         axes[1].legend()
 
         # Subplot Cadence
-        sns.histplot(df['Avg Run Cadence'], bins=20, ax=axes[2], color='blue', alpha=0.5, label='Avg Cadence')
-        sns.histplot(df['Max Run Cadence'], bins=20, ax=axes[2], color='skyblue', alpha=0.5, label='Max Cadence')
+        sns.histplot(df['Avg Run Cadence'], bins=20, ax=axes[2], color=colors[4], alpha=0.5, label='Avg Cadence')
+        sns.histplot(df['Max Run Cadence'], bins=20, ax=axes[2], color=colors[5], alpha=0.5, label='Max Cadence')
         axes[2].set_title('Cadence', fontsize=20)
         axes[2].set_xlabel('spm', fontsize=15)
         axes[2].set_ylabel('')
-        axes[2].yaxis.set_ticks([], fontsize=15)  # Remove y-axis ticks
-        axes[2].xaxis.set_ticks(fontsize=15)  # Remove y-axis ticks
+        axes[2].yaxis.set_ticks([])  # Remove y-axis ticks
+        axes[2].tick_params(axis='both', which='major', labelsize=15)
         axes[2].legend()
 
         # Subplot Distance
-        sns.histplot(df['Distance'], bins=20, ax=axes[3], color='blue', alpha=0.3, label='km')
+        sns.histplot(df['Distance'], bins=20, ax=axes[3], color=colors[6], alpha=0.3, label='km')
         #axes[2].hist(df['Max Run Cadence'], bins=20, color='skyblue', alpha=0.5, label='Max Cadence')
         axes[3].set_title('Distance', fontsize=20)
-        axes[3].set_xlabel('spm', fontsize=15)
+        axes[3].set_xlabel('km', fontsize=15)
         axes[3].set_ylabel('')
-        axes[3].yaxis.set_ticks([], fontsize=15)  # Remove y-axis ticks
-        axes[3].xaxis.set_ticks(fontsize=15)  # Remove y-axis ticks
+        axes[3].yaxis.set_ticks([])  # Remove y-axis ticks
+        axes[3].tick_params(axis='both', which='major', labelsize=15)
         axes[3].legend()
 
         # Adjust layout
