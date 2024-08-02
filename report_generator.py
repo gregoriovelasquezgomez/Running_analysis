@@ -66,6 +66,7 @@ def generate_garmin_plots(df):
         plt.figure(figsize=(20, 20))
         # Set Seaborn style
         sns.set_style('whitegrid')
+        custom_palette = sns.color_palette("Set1", 8)
         sns.set_palette(custom_palette)
 
         # Create a bar plot
@@ -127,7 +128,7 @@ def generate_garmin_plots(df):
         #axs[3].legend()
         #axs2.legend()
         # Add a title
-        plt.suptitle('Running Metrics Over Time')
+        plt.suptitle('Running Metrics Over Time', fontsize=20)
 
         # Adjust spacing between subplots
         plt.tight_layout()
@@ -152,7 +153,7 @@ def generate_garmin_plots(df):
         axes[0].set_ylabel('')
         axes[0].yaxis.set_ticks([])  # Remove y-axis ticks
         axes[0].tick_params(axis='both', which='major', labelsize=15)
-        axes[0].legend()
+        axes[0].legend(fontsize='12')
 
         # Subplot Pace
         sns.histplot(df['Avg Pace'], bins=20, ax=axes[1], color=colors[2], alpha=0.5, label='Avg Pace')
@@ -162,7 +163,7 @@ def generate_garmin_plots(df):
         axes[1].set_ylabel('')
         axes[1].yaxis.set_ticks([])  # Remove y-axis ticks
         axes[1].tick_params(axis='both', which='major', labelsize=15)
-        axes[1].legend()
+        axes[1].legend(fontsize='12')
 
         # Subplot Cadence
         sns.histplot(df['Avg Run Cadence'], bins=20, ax=axes[2], color=colors[4], alpha=0.5, label='Avg Cadence')
@@ -172,7 +173,7 @@ def generate_garmin_plots(df):
         axes[2].set_ylabel('')
         axes[2].yaxis.set_ticks([])  # Remove y-axis ticks
         axes[2].tick_params(axis='both', which='major', labelsize=15)
-        axes[2].legend()
+        axes[2].legend(fontsize='12')
 
         # Subplot Distance
         sns.histplot(df['Distance'], bins=20, ax=axes[3], color=colors[6], alpha=0.3, label='km')
@@ -182,7 +183,7 @@ def generate_garmin_plots(df):
         axes[3].set_ylabel('')
         axes[3].yaxis.set_ticks([])  # Remove y-axis ticks
         axes[3].tick_params(axis='both', which='major', labelsize=15)
-        axes[3].legend()
+        #axes[3].legend(fontsize='12')
 
         # Adjust layout
         plt.tight_layout()
