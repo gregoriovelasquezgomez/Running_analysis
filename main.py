@@ -4,8 +4,8 @@ from email_sender import send_email
 def main():
     # Define parameters/filenames
     #plot_filename = generate_plot()
-    img_filename = 'example_img.jpg'
-    pdf_filename = 'report.pdf'
+    img_filename = 'output/example_img.jpg'
+    pdf_filename = 'output/report.pdf'
     garmin_data_filename = 'garmin/Activities.csv'
     
     # Process the data with the function in report_generator
